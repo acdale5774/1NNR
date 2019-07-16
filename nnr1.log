@@ -1,0 +1,41 @@
+Alexander Dale
+Dr. Schalkoff
+CPSC 3520
+July 16, 2019
+
+printList
+# printList [[1.;2.]];;
+1.  2.
+
+- : unit = ()
+# printList [[1.;2.;3.;4.];[5.;6.;7.;8.];[9.;10.;11.;1.];[12.;13.;14.;2.]];;
+1.  2.  3.  4.
+5.  6.  7.  8.
+9.  10.  11.  1.
+12.  13.  14.  2.
+
+- : unit = ()
+
+theClass
+# theClass [1.;2.];;
+- : float = 2.
+# theClass [1.;2.;3.;4.;5.];;
+- : float = 5.
+
+distanceR2
+# distanceR2([5.;0.],[0.;2.]);;
+- : float = 25.
+# distanceR2([5.;5.;5.;0.],[0.;1.;2.;2.]);;
+- : float = 50.
+
+distanceAllVectors2
+# distanceAllVectors2([5.;1.],[[0.;2.]]);;
+- : float list = [25.]
+# distanceAllVectors2([5.;5.;5.;0.],[[0.;1.;2.;2.];[0.;5.;5.;3.]]);;
+- : float list = [50.; 25.]
+
+nnr1
+# nnr1([5.;0.],[[6.;1.];[3.;2.]]);;
+- : float = 1.
+# nnr1([2.;3.;4.;0.],[[4.;4.;4.;5.];[-1.;0.;0.;6.];[-3.;-6.;-4.;7.];[2.;3.;-100.;8.]]);;
+- : float = 5.

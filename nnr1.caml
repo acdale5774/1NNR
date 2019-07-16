@@ -1,0 +1,96 @@
+(*
+ * Alexander Dale
+ * Dr. Schalkoff
+ * CPSC 3520
+ * July 16, 2019
+ *)
+
+
+(*
+ * printList
+ *)
+let rec printListInner l =
+    match l with
+        [] -> "\n"
+        | h::t -> string_of_float (h) ^ "  " ^ printListInner t;;
+
+let rec printListOuter l = 
+    match l with
+        [] -> "\n"
+        | h::t -> (printListInner h) ^ printListOuter t;;
+
+let printList (listOfLists) = print_string (printListOuter listOfLists);;
+
+
+(*
+ * theClass
+ *)
+let rec theClassInner l =
+    match l with
+        [] -> raise (Invalid_argument "ERROR: theClass called on invalid
+                vector")
+        | h::t -> if t = [] then h else theClassInner t;;
+
+let theClass (aVect) = 
+    match aVect with
+        [] -> raise (Invalid_argument "ERROR: theClass called on invalid
+                vector")
+        | [x] -> raise (Invalid_argument "ERROR: theClass called on invalid
+                vector")
+        | h::t -> theClassInner aVect;;
+
+
+(*
+ * distanceR2
+ *)
+let rec distanceR2Inner v1 v2 =
+    match v1, v2 with
+        [],[] -> raise (Invalid_argument "ERROR: distanceR2 called with invalid vectors")
+        | [],h::t -> raise (Invalid_argument "ERROR: distanceR2 called with invalid vectors")
+        | h::t,[] -> raise (Invalid_argument "ERROR: distanceR2 called with invalid vectors")
+        | h1::t1,h2::t2 -> if t1 = [] then 0. else (h2-.h1)*.(h2-.h1) +. distanceR2Inner t1 t2;;
+
+let rec distanceR2 (v1,v2) =
+    match v1, v2 with
+        ([],[]) -> raise (Invalid_argument "ERROR: distanceR2 called with invalid vectors")
+        | ([x],[y]) -> raise (Invalid_argument "ERROR: distanceR2 called with invalid vectors")
+        | ([],h::t) -> raise (Invalid_argument "ERROR: distanceR2 called with invalid vectors")
+        | (h::t,[]) -> raise (Invalid_argument "ERROR: distanceR2 called with invalid vectors")
+        | (h1::t1,h2::t2) -> distanceR2Inner v1 v2;;
+
+
+(*
+ * distanceAllVectors2
+ *)
+let rec distanceAllVectors2Inner v vset = 
+    match vset with
+        [] -> []
+        | h::t -> distanceR2 (v,h) :: distanceAllVectors2Inner v t;;
+
+let distanceAllVectors2 (v,vset) =
+    match v, vset with
+        [],[] -> raise (Invalid_argument "ERROR: distanceAllVectors2 called with invalid vectors")
+        | [],h::t -> raise (Invalid_argument "ERROR: distanceAllVectors2 called with invalid vectors")
+        | h::t,[] -> raise (Invalid_argument "ERROR: distanceAllVectors2 called with invalid vectors")
+        | [x],h::t -> raise (Invalid_argument "ERROR: distanceAllVectors2 called with invalid vectors")
+        | h1::t1,h2::t2 -> distanceAllVectors2Inner v vset;;
+
+
+(*
+ * nnr1
+ *)
+let rec maxVect v =
+    match v with
+        [] -> []
+        | h::t -> max_float :: maxVect t;;
+
+let rec nnr1Inner test h closest =
+    match h with
+        [] -> theClass (closest)
+        | head::tail ->
+            if distanceR2(test,head) < distanceR2(test,closest) then
+                nnr1Inner test tail head
+            else
+                nnr1Inner test tail closest;;
+
+let nnr1 (test,h) = nnr1Inner test h (maxVect test);; 
